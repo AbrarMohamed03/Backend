@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('rental_photos', function (Blueprint $table) {
             $table->id();
+            $table->string('path');
+            $table->unsignedBigInteger('rental_id');
+            $table->foreign('rental_id')->references('rental_id')->on('rentals');
             $table->timestamps();
         });
     }

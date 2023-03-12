@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('activitie_photos', function (Blueprint $table) {
             $table->id();
+            $table->string('path');
+            $table->unsignedBigInteger('activities_id');
+            $table->foreign('activities_id')->references('activitie_id')->on('activities');
             $table->timestamps();
         });
     }

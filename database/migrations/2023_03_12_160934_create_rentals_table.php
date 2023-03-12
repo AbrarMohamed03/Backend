@@ -12,7 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rentals', function (Blueprint $table) {
-            $table->id();
+            $table->id('rental_id');
+            $table->string('name');
+            $table->string('type');
+            $table->string('desc');
+            $table->string('adress');
+            $table->integer('bedrooms');
+            $table->integer('bathrooms');
+            $table->integer('max_persons');
+            $table->float('price_per_night');
+            
+            $table->unsignedBigInteger('service_id');
+            $table->foreign('service_id')->references('service_id')->on('services');
             $table->timestamps();
         });
     }
