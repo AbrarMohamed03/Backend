@@ -12,7 +12,12 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $service = Service::all();
+
+        return response()->json([
+            'status' => true,
+            'posts' => $service
+        ] ,200);
     }
 
     /**
@@ -28,7 +33,14 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $service = Service::create([
+            'pro_id' => $request->pro_id
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'service has been created successfully',
+            'posts' => $service
+        ] ,200);
     }
 
     /**

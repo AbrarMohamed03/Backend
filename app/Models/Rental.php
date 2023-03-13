@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Rental extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'type',
+        'desc',
+        'adress',
+        'bedrooms',
+        'bathrooms',
+        'max_persons',
+        'price_per_night',
+        'service_id',
+    ];
 }

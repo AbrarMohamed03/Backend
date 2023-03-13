@@ -41,7 +41,7 @@ class AdminController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'admin has been created successfully',
-            'posts' => $admins
+            'admins' => $admins
         ] ,200);
     }
 
@@ -82,7 +82,7 @@ class AdminController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'admin has been updates successfully',
-            'admin' => $updatedadmin
+            'updatedadmin' => $updatedadmin
         ] ,200);
     }
 

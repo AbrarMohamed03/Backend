@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\RentalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +25,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('admin',AdminController::class);
 Route::apiResource('pro',ProController::class);
+Route::apiResource('service',ServiceController::class);
+Route::apiResource('rental',RentalController::class);
