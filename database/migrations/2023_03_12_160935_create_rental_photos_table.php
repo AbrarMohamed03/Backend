@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('path');
             $table->unsignedBigInteger('rental_id');
-            $table->foreign('rental_id')->references('rental_id')->on('rentals');
+            $table->foreign('rental_id')->references('id')->on('rentals');
             $table->timestamps();
         });
     }

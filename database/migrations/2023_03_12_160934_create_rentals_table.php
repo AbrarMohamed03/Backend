@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rentals', function (Blueprint $table) {
-            $table->id('rental_id');
+            $table->id();
             $table->string('name');
             $table->string('type');
             $table->string('desc');
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->float('price_per_night');
             
             $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('service_id')->on('services');
+            $table->foreign('service_id')->references('id')->on('services');
             $table->timestamps();
         });
     }

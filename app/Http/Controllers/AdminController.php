@@ -82,7 +82,7 @@ class AdminController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'admin has been updates successfully',
-            'posts' => $updatedadmin
+            'admin' => $updatedadmin
         ] ,200);
     }
 
@@ -91,8 +91,8 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        $updatedadmin = Admin::findOrfail($admin->id);
-        $updatedadmin->delete();
+        $deletedadmin = Admin::findOrfail($admin->id);
+        $deletedadmin->delete();
 
         return response()->json([
             'status' => true,

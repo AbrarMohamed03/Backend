@@ -12,7 +12,12 @@ class ProController extends Controller
      */
     public function index()
     {
-        //
+        $pros = Pro::all();
+
+        return response()->json([
+            'status' => true,
+            'posts' => $pros
+        ] ,200);
     }
 
     /**
@@ -28,7 +33,17 @@ class ProController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pros = Pro::create([
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+            'CIN' => $request->CIN,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'pro customer has been created successfully',
+            'posts' => $pros
+        ] ,200);
     }
 
     /**
@@ -36,7 +51,12 @@ class ProController extends Controller
      */
     public function show(Pro $pro)
     {
-        //
+        $pro = Pro::findOrfail($pro->id);
+        
+        return response()->json([
+            'status' => true,
+            'pro User' => $pro
+        ]);
     }
 
     /**
@@ -52,7 +72,20 @@ class ProController extends Controller
      */
     public function update(Request $request, Pro $pro)
     {
-        //
+        $updatepro = Pro::findOrfail($pro->id);
+
+        $updatepro->update([
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+            'CIN' => $request->CIN,
+        ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'pro has been updates successfully',
+            'pro' => $updatepro
+        ] ,200);
     }
 
     /**
@@ -60,6 +93,12 @@ class ProController extends Controller
      */
     public function destroy(Pro $pro)
     {
-        //
+        $deletedpro = Pro::findOrfail($pro->id);
+        $deletedpro->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'pro user with the ID : '.$pro->id .' has been deleted successfully'
+        ]);
     }
 }
