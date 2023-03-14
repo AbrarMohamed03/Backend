@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\RentalController;
+use App\Http\Controllers\Rental_photoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,5 @@ Route::apiResource('admin',AdminController::class);
 Route::apiResource('pro',ProController::class);
 Route::apiResource('service',ServiceController::class);
 Route::apiResource('rental',RentalController::class);
+Route::apiResource('Rental_photo',Rental_photoController::class);
+

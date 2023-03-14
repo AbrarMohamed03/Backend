@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Rental_photo extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'path',
+        'rental_id', 
+    ];
 }
