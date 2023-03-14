@@ -36,11 +36,9 @@ class Rental_photoController extends Controller
     {
         $rental_id = $request->rental_id;
         $numberofphotos = 0;
-        
+
         foreach ($request->file('path') as $file) {
-            $filename = random_int(99999, 999999999999999);
-            $extension = $file->getClientOriginalExtension();
-            $imagepath = $filename . '.' . $extension;
+            $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
 
             Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file));
 
@@ -48,12 +46,12 @@ class Rental_photoController extends Controller
                 'path' => $imagepath,
                 'rental_id' => $rental_id,
             ]);
-            $numberofphotos = $numberofphotos + 1;
+            $numberofphotos++;
         }
 
         return response()->json([
             'status' => true,
-            'message' => $numberofphotos .' Photos have been created successfully',
+            'message' => $numberofphotos . ' Photos have been created successfully',
         ], 200);
     }
 
@@ -77,39 +75,90 @@ class Rental_photoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rental_photo $rental_photo)
+    public function update(Request $request, $ids)
     {
-        //
+
+        $idsArray = explode(',', $ids);
+
+        $deleted_photos = Rental_photo::whereIn('id', $idsArray)->get();
+
+        $oneId = array_shift($idsArray);
+        $rental_id = Rental_photo::where('id', $oneId)->value('rental_id');
+
+        foreach ($deleted_photos as $photo) {
+            Storage::disk('public')->delete('RentalPhotos/' . $photo->path);
+            $photo->delete();
+        }
+
+        try {
+            $files = $request->file('path');
+            if (!$files) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No photos were provided',
+                ], 422);
+            }
+
+            $numberofphotos = 0;
+            foreach ($files  as $file) {
+                $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
+
+                Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file));
+
+                Rental_photo::create([
+                    'path' => $imagepath,
+                    'rental_id' => $rental_id,
+                ]);
+                $numberofphotos++;
+            }
+            return response()->json([
+                'status' => true,
+                'message' => $numberofphotos . ' Photos have been updated successfully',
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to upload photos',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($ids)
     {
-        $deletephoto = Rental_photo::find($id);
+        $idsArray = explode(',', $ids);
+        $deletedCount = 0;
 
-        if (!$deletephoto) {
-            return response()->json([
-                'message' => 'The photo with the specified ID does not exist in the database.',
-            ], 404);
-        } else {
+        foreach ($idsArray as $id) {
+            $deletephoto = Rental_photo::find($id);
+
+            if (!$deletephoto) {
+                continue;
+            }
+
             $path = $deletephoto->path;
             $deletedphotopath = 'RentalPhotos/' . $path;
 
             if (Storage::disk('public')->exists($deletedphotopath)) {
-
                 Storage::disk('public')->delete($deletedphotopath); //delete phot from local storage
                 $deletephoto->delete(); //delete phot from the database
-            } else {
-                return response()->json([
-                    'message' => 'The image does not exist in the local storage',
-                ]);
+                $deletedCount++;
             }
+        }
+
+        if ($deletedCount > 0) {
             return response()->json([
                 'status' => true,
-                'message' => 'photo has been deleted successfully',
+                'message' => $deletedCount . ' photo(s) have been deleted successfully',
             ], 200);
+        } else {
+            return response()->json([
+                'message' => 'The specified photos do not exist in the database or the local storage',
+            ], 404);
         }
     }
 }

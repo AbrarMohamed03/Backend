@@ -30,3 +30,5 @@ Route::apiResource('service',ServiceController::class);
 Route::apiResource('rental',RentalController::class);
 Route::apiResource('Rental_photo',Rental_photoController::class);
 
+Route::post('/updatephoto/{id}', [Rental_photoController::class, 'update']);
+
