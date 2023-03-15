@@ -12,7 +12,12 @@ class TouristController extends Controller
      */
     public function index()
     {
-        //
+        $tourist = Tourist::all();
+
+        return response()->json([
+            'status' => true,
+            'Admins' => $tourist
+        ] ,200);
     }
 
     /**
@@ -28,7 +33,19 @@ class TouristController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tourist = Tourist::create([
+            'username' => $request->username,
+            'password' => $request->password,
+            'email' => $request->email,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone_number' => $request->phone_number,
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'tourist(s) has been created successfully',
+            'tourist' => $tourist
+        ] ,200);
     }
 
     /**
@@ -36,7 +53,12 @@ class TouristController extends Controller
      */
     public function show(Tourist $tourist)
     {
-        //
+        $tourist = Tourist::findOrfail($tourist->id);
+        
+        return response()->json([
+            'status' => true,
+            'tourist' => $tourist
+        ]);
     }
 
     /**
@@ -52,7 +74,22 @@ class TouristController extends Controller
      */
     public function update(Request $request, Tourist $tourist)
     {
-        //
+        $updatetourist = Tourist::findOrfail($tourist->id);
+
+        $updatetourist->update([
+            'username' => $request->username,
+            'password' => $request->password,
+            'email' => $request->email,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone_number' => $request->phone_number,
+        ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'tourist has been updates successfully',
+            'updatetourist' => $updatetourist
+        ] ,200);
     }
 
     /**
@@ -60,6 +97,12 @@ class TouristController extends Controller
      */
     public function destroy(Tourist $tourist)
     {
-        //
+        $deletedtourist = Tourist::findOrfail($tourist->id);
+        $deletedtourist->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'tourist has been deleted successfully'
+        ]);
     }
 }

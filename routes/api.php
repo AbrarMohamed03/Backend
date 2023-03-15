@@ -10,6 +10,9 @@ use App\Http\Controllers\RentalController;
 use App\Http\Controllers\Rental_photoController;
 use App\Http\Controllers\ActivitieController;
 use App\Http\Controllers\Activitie_photoController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TouristController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,13 +30,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('admin',AdminController::class);
+
 Route::apiResource('pro',ProController::class);
+
 Route::apiResource('service',ServiceController::class);
+
 Route::apiResource('rental',RentalController::class);
+
 Route::apiResource('rental_photo',Rental_photoController::class);
 Route::post('/updateRental_photo/{id}', [Rental_photoController::class, 'update']);
 
 Route::apiResource('activitie',ActivitieController::class);
+
 Route::apiResource('activitie_photo',Activitie_photoController::class);
 Route::post('/updateactivitie_photo/{id}', [Activitie_photoController::class, 'update']);
 
+Route::apiResource('order',OrderController::class);
+
+Route::apiResource('tourist',TouristController::class);
+
+Route::apiResource('review',ReviewController::class);

@@ -38,7 +38,7 @@ class Rental_photoController extends Controller
         $numberofphotos = 0;
 
         foreach ($request->file('path') as $file) {
-            $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
+            $imagepath = 'Rental-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
 
             Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file));
 
@@ -80,7 +80,7 @@ class Rental_photoController extends Controller
         if (!$files) {
             return response()->json([
                 'status' => false,
-                'message' => 'No photos were provided',
+                'message' => 'No photo(s) were provided',
             ], 422);
         }
         $idsArray = explode(',', $ids);
@@ -91,7 +91,7 @@ class Rental_photoController extends Controller
             try {
                 //loop in the provide files
                 foreach ($files as $file) {
-                    $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
+                    $imagepath = 'Rental-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
                     Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file)); //save the new images to the storage 
                     //save the new path to the DB
                     $updatedphoto->Update([
@@ -109,7 +109,7 @@ class Rental_photoController extends Controller
         }
         return response()->json([
             'status' => true,
-            'message' => $numberofphotos . ' Photos have been updated successfully',
+            'message' => $numberofphotos . ' photo(s) have been updated successfully',
         ], 200);
     }
 
@@ -146,7 +146,7 @@ class Rental_photoController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'message' => 'The specified photos do not exist in the database or the local storage',
+                'message' => 'The specified photo(s) do not exist in the database or the local storage',
             ], 404);
         }
     }

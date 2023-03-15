@@ -104,7 +104,7 @@ class ActivitieController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'admin with the ID : '.$activitie->id .' has been deleted successfully'
+            'message' => 'activitie with the ID : '.$activitie->id .' has been deleted successfully'
         ]);
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('password');
             $table->string('CIN');
+            $table->string('photo');
             $table->timestamps();
         });
     }
