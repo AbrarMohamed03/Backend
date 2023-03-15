@@ -34,25 +34,32 @@ class Activitie_photoController extends Controller
      */
     public function store(Request $request)
     {
-        $rental_id = $request->rental_id;
-        $numberofphotos = 0;
+        try {
+            $activities_id = $request->activities_id;
+            $numberofphotos = 0;
 
-        foreach ($request->file('path') as $file) {
-            $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
+            foreach ($request->file('path') as $file) {
+                $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
 
-            Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file));
+                Storage::disk('public')->put('ActivitiePhotos/' . $imagepath, file_get_contents($file));
 
-            Activitie_photo::create([
-                'path' => $imagepath,
-                'rental_id' => $rental_id,
-            ]);
-            $numberofphotos++;
+                Activitie_photo::create([
+                    'path' => $imagepath,
+                    'activities_id' => $activities_id,
+                ]);
+                $numberofphotos++;
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => $numberofphotos . ' Photos have been created successfully',
+            ], 200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'error2' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'status' => true,
-            'message' => $numberofphotos . ' Photos have been created successfully',
-        ], 200);
     }
 
 
@@ -78,50 +85,41 @@ class Activitie_photoController extends Controller
     public function update(Request $request, $ids)
     {
 
-        $idsArray = explode(',', $ids);
-
-        $deleted_photos = Activitie_photo::whereIn('id', $idsArray)->get();
-
-        $oneId = array_shift($idsArray);
-        $rental_id = Activitie_photo::where('id', $oneId)->value('rental_id');
-
-        foreach ($deleted_photos as $photo) {
-            Storage::disk('public')->delete('RentalPhotos/' . $photo->path);
-            $photo->delete();
-        }
-
-        try {
-            $files = $request->file('path');
-            if (!$files) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'No photos were provided',
-                ], 422);
-            }
-
-            $numberofphotos = 0;
-            foreach ($files  as $file) {
-                $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
-
-                Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file));
-
-                Activitie_photo::create([
-                    'path' => $imagepath,
-                    'rental_id' => $rental_id,
-                ]);
-                $numberofphotos++;
-            }
-            return response()->json([
-                'status' => true,
-                'message' => $numberofphotos . ' Photos have been updated successfully',
-            ], 200);
-        } catch (\Throwable $e) {
+        $files = $request->file('path');
+        if (!$files) {
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to upload photos',
-                'error' => $e->getMessage(),
-            ], 500);
+                'message' => 'No photos were provided',
+            ], 422);
         }
+        $idsArray = explode(',', $ids);
+        foreach ($idsArray as $id) {
+            $updatedphoto = Activitie_photo::find($id); //find photo
+            $deletedpath = $updatedphoto->path;
+            $numberofphotos = 0;
+            try {
+                //loop in the provide files
+                foreach ($files as $file) {
+                    $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
+                    Storage::disk('public')->put('ActivitiePhotos/' . $imagepath, file_get_contents($file)); //save the new images to the storage 
+                    //save the new path to the DB
+                    $updatedphoto->Update([
+                        'path' => $imagepath,
+                    ]);
+                    $numberofphotos++;
+                };
+            } catch (\Throwable $e) {
+                return response()->json([
+                    'status' => false,
+                    'error2' => $e->getMessage(),
+                ], 500);
+            }
+            Storage::disk('public')->delete('ActivitiePhotos/' . $deletedpath); //delete the photo from storage
+        }
+        return response()->json([
+            'status' => true,
+            'message' => $numberofphotos . ' Photos have been updated successfully',
+        ], 200);
     }
 
 
@@ -141,7 +139,7 @@ class Activitie_photoController extends Controller
             }
 
             $path = $deletephoto->path;
-            $deletedphotopath = 'RentalPhotos/' . $path;
+            $deletedphotopath = 'ActivitiePhotos/' . $path;
 
             if (Storage::disk('public')->exists($deletedphotopath)) {
                 Storage::disk('public')->delete($deletedphotopath); //delete phot from local storage

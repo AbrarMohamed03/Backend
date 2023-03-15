@@ -74,54 +74,43 @@ class Rental_photoController extends Controller
 
     /**
      * Update the specified resource in storage.
-     */
-    public function update(Request $request, $ids)
+     */    public function update(Request $request, $ids)
     {
-
-        $idsArray = explode(',', $ids);
-
-        $deleted_photos = Rental_photo::whereIn('id', $idsArray)->get();
-
-        $oneId = array_shift($idsArray);
-        $rental_id = Rental_photo::where('id', $oneId)->value('rental_id');
-
-        foreach ($deleted_photos as $photo) {
-            Storage::disk('public')->delete('RentalPhotos/' . $photo->path);
-            $photo->delete();
-        }
-
-        try {
-            $files = $request->file('path');
-            if (!$files) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'No photos were provided',
-                ], 422);
-            }
-
-            $numberofphotos = 0;
-            foreach ($files  as $file) {
-                $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
-
-                Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file));
-
-                Rental_photo::create([
-                    'path' => $imagepath,
-                    'rental_id' => $rental_id,
-                ]);
-                $numberofphotos++;
-            }
-            return response()->json([
-                'status' => true,
-                'message' => $numberofphotos . ' Photos have been updated successfully',
-            ], 200);
-        } catch (\Throwable $e) {
+        $files = $request->file('path');
+        if (!$files) {
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to upload photos',
-                'error' => $e->getMessage(),
-            ], 500);
+                'message' => 'No photos were provided',
+            ], 422);
         }
+        $idsArray = explode(',', $ids);
+        foreach ($idsArray as $id) {
+            $updatedphoto = Rental_photo::find($id); //find photo
+            $deletedpath = $updatedphoto->path;
+            $numberofphotos = 0;
+            try {
+                //loop in the provide files
+                foreach ($files as $file) {
+                    $imagepath = random_int(99999, 999999999999999) . '.' . $file->getClientOriginalExtension();
+                    Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file)); //save the new images to the storage 
+                    //save the new path to the DB
+                    $updatedphoto->Update([
+                        'path' => $imagepath,
+                    ]);
+                    $numberofphotos++;
+                };
+            } catch (\Throwable $e) {
+                return response()->json([
+                    'status' => false,
+                    'error2' => $e->getMessage(),
+                ], 500);
+            }
+            Storage::disk('public')->delete('RentalPhotos/' . $deletedpath); //delete the photo from storage
+        }
+        return response()->json([
+            'status' => true,
+            'message' => $numberofphotos . ' Photos have been updated successfully',
+        ], 200);
     }
 
 
