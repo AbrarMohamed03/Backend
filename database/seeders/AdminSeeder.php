@@ -17,16 +17,19 @@ class AdminSeeder extends Seeder
             'username' => 'admin1',
             'email' => 'admin1@gmail.com',
             'password' => random_int(10,20),
+            'photo' => ' ',
         ]);
         Admin::create([
             'username' => 'admin2',
             'email' => 'admin2@gmail.com',
             'password' => random_int(10,20),
+            'photo' => ' ',
         ]);
         Admin::create([
             'username' => 'admin3',
             'email' => 'admin3@gmail.com',
             'password' => random_int(10,20),
+            'photo' => ' ',
         ]);
     }
 }

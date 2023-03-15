@@ -20,6 +20,7 @@ class TouristSeeder extends Seeder
             'first_name' =>'kakbcab',
             'last_name' => 'qlieihafih',
             'phone_number' => '06666666666666666',
+            'photo' => ' ',
         ]);
         Tourist::create([
             'username' => 'tourist2',
@@ -28,6 +29,7 @@ class TouristSeeder extends Seeder
             'first_name' =>'sfgwef',
             'last_name' => 'wefwef',
             'phone_number' => '06666666666666666',
+            'photo' => ' ',
         ]);
         Tourist::create([
             'username' => 'tourist3',
@@ -36,6 +38,7 @@ class TouristSeeder extends Seeder
             'first_name' =>'qwrqwd',
             'last_name' => 'qwedqwd',
             'phone_number' => '06666666666666666',
+            'photo' => ' ',
         ]);
     }
 }

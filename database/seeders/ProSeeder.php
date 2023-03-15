@@ -19,24 +19,28 @@ class ProSeeder extends Seeder
             'phone' => '06666666666',
             'password' => random_int(10,20),
             'CIN' => 'X1111111',
+            'photo' => ' ',
         ]);
         Pro::create([
             'email' => 'pro2@gmail.com',
             'phone' => '06666666666',
             'password' => random_int(10,20),
             'CIN' => 'X222222',
+            'photo' => ' ',
         ]);
         Pro::create([
             'email' => 'pro3@gmail.com',
             'phone' => '06666666666',
             'password' => random_int(10,20),
             'CIN' => 'X333333',
+            'photo' => ' ',
         ]);
         Pro::create([
             'email' => 'pro4@gmail.com',
             'phone' => '06666666666',
             'password' => random_int(10,20),
             'CIN' => 'X44444444',
+            'photo' => ' ',
         ]);
     }
 }

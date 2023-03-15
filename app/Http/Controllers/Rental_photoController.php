@@ -17,7 +17,7 @@ class Rental_photoController extends Controller
 
         return response()->json([
             'status' => true,
-            'paths' => $photos
+            'photos' => $photos
         ], 200);
     }
 
@@ -37,13 +37,13 @@ class Rental_photoController extends Controller
         $rental_id = $request->rental_id;
         $numberofphotos = 0;
 
-        foreach ($request->file('path') as $file) {
-            $imagepath = 'Rental-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
+        foreach ($request->file('photo') as $file) {
+            $photopath = 'Rental-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
 
-            Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file));
+            Storage::disk('public')->put('RentalPhotos/' . $photopath, file_get_contents($file));
 
             Rental_photo::create([
-                'path' => $imagepath,
+                'photo' => $photopath,
                 'rental_id' => $rental_id,
             ]);
             $numberofphotos++;
@@ -76,7 +76,7 @@ class Rental_photoController extends Controller
      * Update the specified resource in storage.
      */    public function update(Request $request, $ids)
     {
-        $files = $request->file('path');
+        $files = $request->file('photo');
         if (!$files) {
             return response()->json([
                 'status' => false,
@@ -91,11 +91,11 @@ class Rental_photoController extends Controller
             try {
                 //loop in the provide files
                 foreach ($files as $file) {
-                    $imagepath = 'Rental-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
-                    Storage::disk('public')->put('RentalPhotos/' . $imagepath, file_get_contents($file)); //save the new images to the storage 
+                    $photopath = 'Rental-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
+                    Storage::disk('public')->put('RentalPhotos/' . $photopath, file_get_contents($file)); //save the new images to the storage 
                     //save the new path to the DB
                     $updatedphoto->Update([
-                        'path' => $imagepath,
+                        'photo' => $photopath,
                     ]);
                     $numberofphotos++;
                 };

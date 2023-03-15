@@ -17,7 +17,7 @@ class Activitie_photoController extends Controller
 
         return response()->json([
             'status' => true,
-            'paths' => $photos
+            'photos' => $photos
         ], 200);
     }
 
@@ -38,13 +38,13 @@ class Activitie_photoController extends Controller
             $activities_id = $request->activities_id;
             $numberofphotos = 0;
 
-            foreach ($request->file('path') as $file) {
-                $imagepath = 'Activi-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
+            foreach ($request->file('photo') as $file) {
+                $photopath = 'Activi-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
 
-                Storage::disk('public')->put('ActivitiePhotos/' . $imagepath, file_get_contents($file));
+                Storage::disk('public')->put('ActivitiePhotos/' . $photopath, file_get_contents($file));
 
                 Activitie_photo::create([
-                    'path' => $imagepath,
+                    'photo' => $photopath,
                     'activities_id' => $activities_id,
                 ]);
                 $numberofphotos++;
@@ -85,7 +85,7 @@ class Activitie_photoController extends Controller
     public function update(Request $request, $ids)
     {
 
-        $files = $request->file('path');
+        $files = $request->file('photo');
         if (!$files) {
             return response()->json([
                 'status' => false,
@@ -100,11 +100,11 @@ class Activitie_photoController extends Controller
             try {
                 //loop in the provide files
                 foreach ($files as $file) {
-                    $imagepath = 'Activi-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
-                    Storage::disk('public')->put('ActivitiePhotos/' . $imagepath, file_get_contents($file)); //save the new images to the storage 
+                    $photopath = 'Activi-'.random_int(10000, 100000) . '.' . $file->getClientOriginalExtension();
+                    Storage::disk('public')->put('ActivitiePhotos/' . $photopath, file_get_contents($file)); //save the new images to the storage 
                     //save the new path to the DB
                     $updatedphoto->Update([
-                        'path' => $imagepath,
+                        'photo' => $photopath,
                     ]);
                     $numberofphotos++;
                 };
