@@ -15,6 +15,8 @@ class ProSeeder extends Seeder
     public function run(): void
     {
         Pro::create([
+            'firstName' => 'WQEFWEFWF',
+            'lastName' => 'vwevwve ',
             'email' => 'pro1@gmail.com',
             'phone' => '06666666666',
             'password' => random_int(10,20),
@@ -22,6 +24,8 @@ class ProSeeder extends Seeder
             'photo' => ' ',
         ]);
         Pro::create([
+            'firstName' => 'WQEFWEFWF',
+            'lastName' => 'vwevwve ',
             'email' => 'pro2@gmail.com',
             'phone' => '06666666666',
             'password' => random_int(10,20),
@@ -29,6 +33,8 @@ class ProSeeder extends Seeder
             'photo' => ' ',
         ]);
         Pro::create([
+            'firstName' => 'WQEFWEFWF',
+            'lastName' => 'vwevwve ',
             'email' => 'pro3@gmail.com',
             'phone' => '06666666666',
             'password' => random_int(10,20),
@@ -36,6 +42,8 @@ class ProSeeder extends Seeder
             'photo' => ' ',
         ]);
         Pro::create([
+            'firstName' => 'WQEFWEFWF',
+            'lastName' => 'vwevwve ',
             'email' => 'pro4@gmail.com',
             'phone' => '06666666666',
             'password' => random_int(10,20),

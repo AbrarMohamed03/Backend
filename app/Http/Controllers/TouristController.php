@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Tourist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class TouristController extends Controller
 {
@@ -17,7 +19,7 @@ class TouristController extends Controller
         return response()->json([
             'status' => true,
             'Admins' => $tourist
-        ] ,200);
+        ], 200);
     }
 
     /**
@@ -33,19 +35,27 @@ class TouristController extends Controller
      */
     public function store(Request $request)
     {
+        $Newphotopath = '';
+        if ($request->has('photo')) {
+
+            $Newphotopath = 'Tourist-' . random_int(10000, 100000) . '.' .  $request->photo->getClientOriginalExtension();
+            Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
+        }
+
         $tourist = Tourist::create([
-            'username' => $request->username,
             'password' => $request->password,
             'email' => $request->email,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
             'phone_number' => $request->phone_number,
+            'photo' => $Newphotopath,
         ]);
+
         return response()->json([
             'status' => true,
-            'message' => 'tourist(s) has been created successfully',
-            'tourist' => $tourist
-        ] ,200);
+            'message' => 'tourist created successfully',
+            'pros' => $tourist
+        ], 200);
     }
 
     /**
@@ -54,7 +64,7 @@ class TouristController extends Controller
     public function show(Tourist $tourist)
     {
         $tourist = Tourist::findOrfail($tourist->id);
-        
+
         return response()->json([
             'status' => true,
             'tourist' => $tourist
@@ -72,24 +82,40 @@ class TouristController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tourist $tourist)
+    public function update(Request $request, $id)
     {
-        $updatetourist = Tourist::findOrfail($tourist->id);
+        $updatedtourist = Tourist::find($id);
 
-        $updatetourist->update([
-            'username' => $request->username,
-            'password' => $request->password,
-            'email' => $request->email,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'phone_number' => $request->phone_number,
-        ]);
-        
+        if ($request->has('photo')) {
+            $Oldphotopath = $updatedtourist->photo;
+            $Newphotopath = 'Tourist-' . random_int(10000, 100000) . '.' .  $request->photo->getClientOriginalExtension();
+            Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
+            Storage::disk('public')->delete('Profils/' . $Oldphotopath);
+            $updatedtourist->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => $request->password,
+                'CIN' => $request->CIN,
+                'photo' => $Newphotopath,
+            ]);
+        } else {
+            $updatedtourist->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => $request->password,
+                'CIN' => $request->CIN,
+            ]);
+        }
+
         return response()->json([
             'status' => true,
-            'message' => 'tourist has been updates successfully',
-            'updatetourist' => $updatetourist
-        ] ,200);
+            'message' => 'Pro user updated successfully',
+            'updatedtourist' => $updatedtourist
+        ], 200);
     }
 
     /**

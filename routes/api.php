@@ -30,8 +30,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('admin',AdminController::class);
+Route::post('/updateadmin/{id}',[AdminController::class, 'update']);
 
 Route::apiResource('pro',ProController::class);
+Route::post('/updatepro/{id}',[ProController::class, 'update']);
 
 Route::apiResource('service',ServiceController::class);
 
@@ -48,5 +50,6 @@ Route::post('/updateactivitie_photo/{id}', [Activitie_photoController::class, 'u
 Route::apiResource('order',OrderController::class);
 
 Route::apiResource('tourist',TouristController::class);
+Route::post('/updatetourist/{id}',[TouristController::class, 'update']);
 
 Route::apiResource('review',ReviewController::class);

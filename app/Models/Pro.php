@@ -11,8 +11,12 @@ class Pro extends Model
 
     protected $fillable = [
         'email',
+        'firstName',
+        'lastName',
         'phone',
         'password',
-        'CIN'
+        'CIN',
+        'photo'
+
     ];
 }

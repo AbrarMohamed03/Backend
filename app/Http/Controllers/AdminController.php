@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class AdminController extends Controller
 {
@@ -17,7 +19,7 @@ class AdminController extends Controller
         return response()->json([
             'status' => true,
             'Admins' => $admins
-        ] ,200);
+        ], 200);
     }
 
     /**
@@ -33,17 +35,28 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+        $Newphotopath = '';
+        if ($request->has('photo')) {
+
+            $Newphotopath = 'Admin-' . random_int(10000, 100000) . '.' .  $request->photo->getClientOriginalExtension();
+            Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
+        }
+
         $admins = Admin::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => $request->password,
+            'photo' => $Newphotopath,
         ]);
+
         return response()->json([
             'status' => true,
             'message' => 'admin has been created successfully',
             'admins' => $admins
-        ] ,200);
+        ], 200);
     }
+
+
 
     /**
      * Display the specified resource.
@@ -51,7 +64,7 @@ class AdminController extends Controller
     public function show(Admin $admin)
     {
         $admin = Admin::findOrfail($admin->id);
-        
+
         return response()->json([
             'status' => true,
             'Admin' => $admin
@@ -69,22 +82,36 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request, $id)
     {
-        $updatedadmin = Admin::findOrfail($admin->id);
+        $updatedadmin = Admin::find($id);
 
-        $updatedadmin->update([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
-        
+        if ($request->has('photo')) {
+            $Oldphotopath = $updatedadmin->photo;
+            $Newphotopath = 'Admin-' . random_int(10000, 100000) . '.' .  $request->photo->getClientOriginalExtension();
+            Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
+            Storage::disk('public')->delete('Profils/' . $Oldphotopath);
+            $updatedadmin->update([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => $request->password,
+                'photo' => $Newphotopath,
+            ]);
+        } else {
+            $updatedadmin->update([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => $request->password,
+            ]);
+        }
+
         return response()->json([
             'status' => true,
-            'message' => 'admin has been updates successfully',
+            'message' => 'admin has been updated successfully',
             'updatedadmin' => $updatedadmin
-        ] ,200);
+        ], 200);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -96,8 +123,7 @@ class AdminController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'admin with the ID : '.$admin->id .' has been deleted successfully'
+            'message' => 'admin with the ID : ' . $admin->id . ' has been deleted successfully'
         ]);
     }
 }
-

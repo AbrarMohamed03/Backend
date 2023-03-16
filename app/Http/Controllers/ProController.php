@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProController extends Controller
 {
@@ -17,7 +19,7 @@ class ProController extends Controller
         return response()->json([
             'status' => true,
             'posts' => $pros
-        ] ,200);
+        ], 200);
     }
 
     /**
@@ -33,17 +35,28 @@ class ProController extends Controller
      */
     public function store(Request $request)
     {
+        $Newphotopath = '';
+        if ($request->has('photo')) {
+
+            $Newphotopath = 'Pro-' . random_int(10000, 100000) . '.' .  $request->photo->getClientOriginalExtension();
+            Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
+        }
+
         $pros = Pro::create([
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => $request->password,
             'CIN' => $request->CIN,
+            'photo' => $Newphotopath,
         ]);
+
         return response()->json([
             'status' => true,
-            'message' => 'pro customer has been created successfully',
-            'posts' => $pros
-        ] ,200);
+            'message' => 'Pro User created successfully',
+            'pros' => $pros
+        ], 200);
     }
 
     /**
@@ -52,7 +65,7 @@ class ProController extends Controller
     public function show(Pro $pro)
     {
         $pro = Pro::findOrfail($pro->id);
-        
+
         return response()->json([
             'status' => true,
             'pro User' => $pro
@@ -70,22 +83,40 @@ class ProController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pro $pro)
+    public function update(Request $request, $id)
     {
-        $updatepro = Pro::findOrfail($pro->id);
+        $updatedpro = Pro::find($id);
 
-        $updatepro->update([
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => $request->password,
-            'CIN' => $request->CIN,
-        ]);
-        
+        if ($request->has('photo')) {
+            $Oldphotopath = $updatedpro->photo;
+            $Newphotopath = 'Pro-' . random_int(10000, 100000) . '.' .  $request->photo->getClientOriginalExtension();
+            Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
+            Storage::disk('public')->delete('Profils/' . $Oldphotopath);
+            $updatedpro->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => $request->password,
+                'CIN' => $request->CIN,
+                'photo' => $Newphotopath,
+            ]);
+        } else {
+            $updatedpro->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => $request->password,
+                'CIN' => $request->CIN,
+            ]);
+        }
+
         return response()->json([
             'status' => true,
-            'message' => 'pro has been updates successfully',
-            'pro' => $updatepro
-        ] ,200);
+            'message' => 'Pro user updated successfully',
+            'updatedpro' => $updatedpro
+        ], 200);
     }
 
     /**
@@ -98,7 +129,7 @@ class ProController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'pro user with the ID : '.$pro->id .' has been deleted successfully'
+            'message' => 'pro user deleted successfully'
         ]);
     }
 }
