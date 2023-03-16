@@ -14,7 +14,7 @@ class Tourist extends Model
         'firstName',
         'lastName',
         'password',
-        'phone_number',
+        'phoneNumber',
         'photo'
     ];
 }
