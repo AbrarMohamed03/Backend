@@ -3,38 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Storage;
 
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $admins = Admin::all();
 
-        return response()->json([
-            'status' => true,
-            'Admins' => $admins
-        ], 200);
+    use HttpResponses;
+
+    public function login(Request $request)
+    {
+        // return $request;
+        $validated = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:8'
+        ]);
+        
+        // return Auth::guard('admin');
+        if(Auth::guard('admin')->attempt($request->only('email','password'))) {
+            return $this->error('', 'email or password are incorrect', 401);
+        }
+
+        $admin = Admin::where('email', $request->email)->first();
+
+        return $this->success([
+            'Admin' => $admin,
+            'token' => $admin->createToken('API Token of ' . $admin->name)->plainTextToken
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function register(Request $request)
     {
+
+        $validated = $request->validate([
+            'username' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255', 'unique:admins,email'],
+            'password' => ['required', 'min:8', Password::defaults()]
+        ]);
+
         $Newphotopath = '';
         if ($request->has('photo')) {
 
@@ -42,88 +54,25 @@ class AdminController extends Controller
             Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
         }
 
-        $admins = Admin::create([
+        $admin = Admin::create([
             'username' => $request->username,
             'email' => $request->email,
-            'password' => $request->password,
             'photo' => $Newphotopath,
+            'password' => Hash::make($request->password)
         ]);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'admin has been created successfully',
-            'admins' => $admins
-        ], 200);
-    }
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Admin $admin)
-    {
-        $admin = Admin::findOrfail($admin->id);
-
-        return response()->json([
-            'status' => true,
-            'Admin' => $admin
+        return $this->success([
+            'Admin' => $admin,
+            'token' => $admin->createToken('API Token of ' . $admin->name)->plainTextToken
         ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin $admin)
+    public function logout()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        $updatedadmin = Admin::find($id);
-
-        if ($request->has('photo')) {
-            $Oldphotopath = $updatedadmin->photo;
-            $Newphotopath = 'Admin-' . random_int(10000, 100000) . '.' .  $request->photo->getClientOriginalExtension();
-            Storage::disk('public')->put('Profils/' . $Newphotopath, file_get_contents($request->photo));
-            Storage::disk('public')->delete('Profils/' . $Oldphotopath);
-            $updatedadmin->update([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => $request->password,
-                'photo' => $Newphotopath,
-            ]);
-        } else {
-            $updatedadmin->update([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => $request->password,
-            ]);
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'admin has been updated successfully',
-            'updatedadmin' => $updatedadmin
-        ], 200);
-    }
+        Auth::Admin()->currentAccessToken()->delete();
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Admin $admin)
-    {
-        $deletedadmin = Admin::findOrfail($admin->id);
-        $deletedadmin->delete();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'admin with the ID : ' . $admin->id . ' has been deleted successfully'
+        return $this->success([
+            'message' =>  'you logged out'
         ]);
     }
 }

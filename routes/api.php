@@ -29,7 +29,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('admin',AdminController::class);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::post('/adminLogin',[AdminController::class, 'login']);
+
+});
+
+Route::post('/adminRegister',[AdminController::class, 'register']);
 Route::post('/updateadmin/{id}',[AdminController::class, 'update']);
 
 Route::apiResource('pro',ProController::class);
