@@ -13,7 +13,7 @@ class Pro extends Model
         'email',
         'firstName',
         'lastName',
-        'phoneNumber',
+        'phone',
         'password',
         'CIN',
         'photo'

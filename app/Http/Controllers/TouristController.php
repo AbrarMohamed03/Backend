@@ -47,7 +47,7 @@ class TouristController extends Controller
             'email' => $request->email,
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
-            'phoneNumber' => $request->phoneNumber,
+            'phone_number' => $request->phone_number,
             'photo' => $Newphotopath,
         ]);
 
