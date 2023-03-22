@@ -20,20 +20,22 @@ class AdminController extends Controller
     {
         // return $request;
         $validated = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8'
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
         
         // return Auth::guard('admin');
-        if(Auth::guard('admin')->attempt($request->only('email','password'))) {
-            return $this->error('', 'email or password are incorrect', 401);
-        }
+        
+    if(!Auth::guard('admin')->attempt($request->only('email','password'))) {
+        return $this->error('', 'email or password are incorrect', 401);
+    }
 
-        $admin = Admin::where('email', $request->email)->first();
+    $admin = Admin::where('email', $request->email)->first();
 
+    $username =  $admin->username;
         return $this->success([
             'Admin' => $admin,
-            'token' => $admin->createToken('API Token of ' . $admin->name)->plainTextToken
+            'token' => $admin->createToken('Login API Token of ' . $username)->plainTextToken
         ]);
     }
 
@@ -61,18 +63,18 @@ class AdminController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
+        $username =  $admin->username;
         return $this->success([
             'Admin' => $admin,
-            'token' => $admin->createToken('API Token of ' . $admin->name)->plainTextToken
+            'token' => $admin->createToken('Register API Token of ' . $username)->plainTextToken
         ]);
     }
     public function logout()
     {
-        Auth::Admin()->currentAccessToken()->delete();
-
+        Auth::user()->currentAccessToken()->delete();
 
         return $this->success([
-            'message' =>  'you logged out'
+            'message' => 'You have succesfully been logged out'
         ]);
     }
 }

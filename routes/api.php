@@ -30,16 +30,35 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-
-    Route::post('/adminLogin',[AdminController::class, 'login']);
-
+  
 });
 
-Route::post('/adminRegister',[AdminController::class, 'register']);
-Route::post('/updateadmin/{id}',[AdminController::class, 'update']);
 
-Route::apiResource('pro',ProController::class);
-Route::post('/updatepro/{id}',[ProController::class, 'update']);
+
+Route::post('/adminRegister',[AdminController::class, 'register']);
+Route::post('/adminLogin',[AdminController::class, 'login']);
+Route::post('/updateadmin/{id}',[AdminController::class, 'update']);//not working yet
+Route::middleware(['auth:sanctum', '\App\Http\Middleware\AdminMiddleware'])->group(function () {
+    Route::post('/adminLogout',[AdminController::class, 'logout']);
+});
+
+Route::post('/proRegister',[ProController::class, 'register']);
+Route::post('/proLogin',[ProController::class, 'login']);
+Route::post('/updatepro/{id}',[ProController::class, 'update']);//not working yet
+Route::middleware(['auth:sanctum', '\App\Http\Middleware\ProMiddleware'])->group(function () {
+    Route::post('/proLogout',[ProController::class, 'logout']);
+});
+
+Route::post('/touristRegister',[TouristController::class, 'register']);
+Route::post('/touristLogin',[TouristController::class, 'login']);
+Route::post('/updatetourist/{id}',[TouristController::class, 'update']);//not working yet
+Route::middleware(['auth:sanctum', '\App\Http\Middleware\TouristMiddleware'])->group(function () {
+    Route::post('/touristLogout',[TouristController::class, 'logout']);
+});
+
+
+
+
 
 Route::apiResource('service',ServiceController::class);
 
@@ -54,8 +73,5 @@ Route::apiResource('activitie_photo',Activitie_photoController::class);
 Route::post('/updateactivitie_photo/{id}', [Activitie_photoController::class, 'update']);
 
 Route::apiResource('order',OrderController::class);
-
-Route::apiResource('tourist',TouristController::class);
-Route::post('/updatetourist/{id}',[TouristController::class, 'update']);
 
 Route::apiResource('review',ReviewController::class);

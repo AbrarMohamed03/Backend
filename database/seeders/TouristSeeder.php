@@ -18,7 +18,7 @@ class TouristSeeder extends Seeder
             'email' => 'tourist1@gmail.com',
             'firstName' =>'kakbcab',
             'lastName' => 'qlieihafih',
-            'phone_number' => '06666666666666666',
+            'phoneNumber' => '06666666666666666',
             'photo' => ' ',
         ]);
         Tourist::create([
@@ -26,7 +26,7 @@ class TouristSeeder extends Seeder
             'email' => 'tourist2@gmail.com',
             'firstName' =>'sfgwef',
             'lastName' => 'wefwef',
-            'phone_number' => '06666666666666666',
+            'phoneNumber' => '06666666666666666',
             'photo' => ' ',
         ]);
         Tourist::create([
@@ -34,7 +34,7 @@ class TouristSeeder extends Seeder
             'email' => 'tourist3@gmail.com',
             'firstName' =>'qwrqwd',
             'lastName' => 'qwedqwd',
-            'phone_number' => '06666666666666666',
+            'phoneNumber' => '06666666666666666',
             'photo' => ' ',
         ]);
     }

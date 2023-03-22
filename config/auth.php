@@ -44,6 +44,14 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        'pro' => [
+            'driver' => 'session',
+            'provider' => 'pros',
+        ],
+        'tourist' => [
+            'driver' => 'session',
+            'provider' => 'tourists',
+        ],
     ],
 
     /*
@@ -72,11 +80,15 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+        'tourists' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Tourist::class,
+        ],
+        'pros' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pro::class,
+        ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -107,6 +119,18 @@ return [
         ],
         'admins' => [
             'provider' => 'admins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'pros' => [
+            'provider' => 'pros',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'tourists' => [
+            'provider' => 'tourists',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
