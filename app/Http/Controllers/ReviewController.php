@@ -49,9 +49,9 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Review $review)
+    public function show(Request $request)
     {
-        $review = Review::findOrfail($review->id);
+        $review = Review::findOrfail($request->id);
         
         return response()->json([
             'status' => true,
@@ -70,9 +70,9 @@ class ReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request)
     {
-        $updatedreview = Review::findOrfail($review->id);
+        $updatedreview = Review::findOrfail($request->id);
 
         $updatedreview->update([
             'rate' => $request->rate,
@@ -91,9 +91,9 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Review $review)
+    public function destroy(Request $request)
     {
-        $deletedreview = Review::findOrfail($review->id);
+        $deletedreview = Review::findOrfail($request->id);
         $deletedreview->delete();
 
         return response()->json([

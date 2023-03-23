@@ -51,9 +51,9 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Request $request)
     {
-        $order = Order::findOrfail($order->id);
+        $order = Order::findOrfail($request->id);
         
         return response()->json([
             'status' => true,
@@ -73,9 +73,9 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request)
     {
-        $updateorder = Order::findOrfail($order->id);
+        $updateorder = Order::findOrfail($request->id);
 
         $updateorder->update([
             'tourist_id' => $request->tourist_id,
@@ -93,14 +93,14 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Request $request)
     {
-        $deletedorder = Order::findOrfail($order->id);
+        $deletedorder = Order::findOrfail($request->id);
         $deletedorder->delete();
 
         return response()->json([
             'status' => true,
-            'message' => 'order with the ID : '.$order->id .' has been deleted successfully'
+            'message' => 'order deleted successfully'
         ]);
     }
 }

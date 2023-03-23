@@ -55,9 +55,9 @@ class RentalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Rental $rental)
+    public function show(Request $request)
     {
-        $rental = Rental::findOrfail($rental->id);
+        $rental = Rental::findOrfail($request->id);
         
         return response()->json([
             'status' => true,
@@ -76,9 +76,9 @@ class RentalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rental $rental)
+    public function update(Request $request)
     {
-        $updatedrental = Rental::findOrfail($rental->id);
+        $updatedrental = Rental::findOrfail($request->id);
         
         $updatedrental->update([
             'name' => $request->name,
@@ -102,14 +102,14 @@ class RentalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rental $rental)
+    public function destroy(Request $request)
     {
-        $deletedrental = Rental::findOrfail($rental->id);
+        $deletedrental = Rental::findOrfail($request->id);
         $deletedrental->delete();
 
         return response()->json([
             'status' => true,
-            'message' => 'admin with the ID : '.$rental->id .' has been deleted successfully'
+            'message' => 'Rental deleted successfully'
         ]);
     }
 }

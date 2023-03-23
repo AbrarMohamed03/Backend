@@ -52,9 +52,9 @@ class ActivitieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Activitie $activitie)
+    public function show(Request $request)
     {
-        $activities = Activitie::findOrfail($activitie->id);
+        $activities = Activitie::findOrfail($request->id);
         
         return response()->json([
             'status' => true,
@@ -73,9 +73,9 @@ class ActivitieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Activitie $activitie)
+    public function update(Request $request)
     {
-        $updateactivitie = Activitie::findOrfail($activitie->id);
+        $updateactivitie = Activitie::findOrfail($request->id);
 
         $updateactivitie->update([
             'name' => $request->name,
@@ -97,14 +97,14 @@ class ActivitieController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Activitie $activitie)
+    public function destroy(Request $request)
     {
-        $deletedactivitie = Activitie::findOrfail($activitie->id);
+        $deletedactivitie = Activitie::findOrfail($request->id);
         $deletedactivitie->delete();
 
         return response()->json([
             'status' => true,
-            'message' => 'activitie with the ID : '.$activitie->id .' has been deleted successfully'
+            'message' => 'activitie deleted successfully'
         ]);
     }
 }
