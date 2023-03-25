@@ -13,7 +13,7 @@ class RentalController extends Controller
      */
     public function index()
     {
-        $rentals = Rental::all();
+        $rentals = Rental::paginate(5);
 
         return response()->json([
             'status' => true,

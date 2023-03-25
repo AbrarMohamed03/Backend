@@ -125,7 +125,6 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\ProMiddleware'])->group
 
     Route::get('/review', [ReviewController::class, 'index']);
     Route::get('/review/{id}', [ReviewController::class, 'show']);
-
 });
 
 //========================== Tourist Routers ==========================
@@ -162,3 +161,10 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\TouristMiddleware'])->g
     Route::put('/review/{id}', [ReviewController::class, 'update']);
     Route::delete('/review/{id}', [ReviewController::class, 'destroy']);
 });
+
+
+Route::get('/service', [ServiceController::class, 'index']);
+Route::get('/service/{id}', [ServiceController::class, 'show']);
+
+Route::get('/rental', [RentalController::class, 'index']);
+Route::get('/rental/{id}', [RentalController::class, 'show']);
