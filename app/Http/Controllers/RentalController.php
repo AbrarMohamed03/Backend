@@ -17,7 +17,7 @@ class RentalController extends Controller
 
         return response()->json([
             'status' => true,
-            'rentals' => $rentals
+            'rentals' => $rentals,
         ] ,200);
     }
 

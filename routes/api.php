@@ -168,3 +168,5 @@ Route::get('/service/{id}', [ServiceController::class, 'show']);
 
 Route::get('/rental', [RentalController::class, 'index']);
 Route::get('/rental/{id}', [RentalController::class, 'show']);
+
+
