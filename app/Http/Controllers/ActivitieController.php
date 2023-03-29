@@ -12,7 +12,7 @@ class ActivitieController extends Controller
      */
     public function index()
     {
-        $activities = Activitie::all();
+        $activities = Activitie::paginate(10);
 
         return response()->json([
             'status' => true,

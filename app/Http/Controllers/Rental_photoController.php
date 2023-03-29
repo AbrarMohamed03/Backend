@@ -13,7 +13,7 @@ class Rental_photoController extends Controller
      */
     public function index()
     {
-        $photos = Rental_photo::all();
+        $photos = Rental_photo::paginate(10);
 
         return response()->json([
             'status' => true,

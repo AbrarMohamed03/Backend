@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Type_activities;
+use App\Models\Type_activitie;
 use Illuminate\Http\Request;
 
-class Type_activitiesController extends Controller
+class Type_activitieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $Types = Type_activities::all();
+        $Types = Type_activitie::paginate(10);
 
         return response()->json([
             'status' => true,
@@ -33,7 +33,7 @@ class Type_activitiesController extends Controller
      */
     public function store(Request $request)
     {
-        $Types = Type_activities::create([
+        $Types = Type_activitie::create([
             'name' => $request->name,
         ]);
         return response()->json([
@@ -48,7 +48,7 @@ class Type_activitiesController extends Controller
      */
     public function show(Request $request)
     {
-        $Types = Type_activities::findOrfail($request->id);
+        $Types = Type_activitie::findOrfail($request->id);
         
         return response()->json([
             'status' => true,
@@ -59,7 +59,7 @@ class Type_activitiesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Type_activities $type_activities)
+    public function edit(Type_activitie $Type_activitie)
     {
         //
     }
@@ -69,7 +69,7 @@ class Type_activitiesController extends Controller
      */
     public function update(Request $request)
     {
-        $updatedType = Type_activities::findOrfail($request->id);
+        $updatedType = Type_activitie::findOrfail($request->id);
 
         $updatedType->update([
             'name' => $request->name,
@@ -88,7 +88,7 @@ class Type_activitiesController extends Controller
      */
     public function destroy(Request $request)
     {
-        $deletedType = Type_activities::findOrfail($request->id);
+        $deletedType = Type_activitie::findOrfail($request->id);
         $deletedType->delete();
 
         return response()->json([

@@ -12,7 +12,7 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        $review = Review::all();
+        $review = Review::paginate(10);
 
         return response()->json([
             'status' => true,

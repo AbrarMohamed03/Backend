@@ -23,6 +23,10 @@ class OrderFactory extends Factory
             'tourist_id' => Tourist::all()->random()->id,
             'service_id' => Service::all()->random()->id,
             'status_id' => Order_status::all()->random()->id,
+
+            // 'tourist_id' => fake()->numberBetween(0,10),
+            // 'service_id' => fake()->numberBetween(0,10),
+            // 'status_id' => fake()->numberBetween(0,10),
         ];
     }
 }

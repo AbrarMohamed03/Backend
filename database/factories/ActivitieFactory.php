@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Service;
+use App\Models\Type_activitie;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,6 +26,7 @@ class ActivitieFactory extends Factory
             'duration_type' => fake()->randomLetter(),
             'price_per_person' => fake()->numberBetween(2,5),
             'service_id' => Service::all()->random()->id,
+            'type_id' => Type_activitie::all()->random()->id,
         ];
     }
 }
