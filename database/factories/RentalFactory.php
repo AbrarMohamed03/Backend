@@ -27,6 +27,8 @@ class RentalFactory extends Factory
             'max_persons' => fake()->numberBetween(2,5),
             'price_per_night' => fake()->numberBetween(300,500),
             'service_id' => Service::all()->random()->id,
+            'houseType' => fake()->randomElement(['appertment','house','villa','riad','motel','hotel','room']),
+            'city' => fake()->randomElement(['agadir','rabat','tanger','casablanca','marakech','essouira','mohamedia'])
         ];
     }
 }

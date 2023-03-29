@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('bathrooms');
             $table->integer('max_persons');
             $table->float('price_per_night');
+            $table->string('houseType');
+            $table->string('city');
             
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');

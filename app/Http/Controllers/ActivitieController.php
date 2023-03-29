@@ -10,14 +10,41 @@ class ActivitieController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $activities = Activitie::paginate(10);
+        if ($request->has('type') and $request->has('city')) {
 
-        return response()->json([
-            'status' => true,
-            'Activities' => $activities
-        ], 200);
+            $activitie = Activitie::where('type', $request->type)
+                ->where('city', $request->city)->get();
+
+            return response()->json([
+                'status' => true,
+                'activitie type {' . $request->type . '} activitie at {' . $request->city . '}'  => $activitie,
+            ], 200);
+        } elseif ($request->has('type')) {
+
+            $activitie = Activitie::where('type', $request->type)->get();
+
+            return response()->json([
+                'status' => true,
+                'activitie type ' . $request->type => $activitie,
+            ], 200);
+        } elseif ($request->has('city')) {
+
+            $activitie = Activitie::where('city', $request->city)->get();
+
+            return response()->json([
+                'status' => true,
+                'activitie at ' . $request->city . ' ' => $activitie,
+            ], 200);
+        } else {
+            $activitie = Activitie::paginate(10);
+
+            return response()->json([
+                'status' => true,
+                'activitie' => $activitie,
+            ], 200);
+        }
     }
 
     /**
@@ -46,7 +73,7 @@ class ActivitieController extends Controller
             'status' => true,
             'message' => 'activitie has been created successfully',
             'admins' => $activitie
-        ] ,200);
+        ], 200);
     }
 
     /**
@@ -55,7 +82,7 @@ class ActivitieController extends Controller
     public function show(Request $request)
     {
         $activities = Activitie::findOrfail($request->id);
-        
+
         return response()->json([
             'status' => true,
             'Activities' => $activities
@@ -86,12 +113,12 @@ class ActivitieController extends Controller
             'price_per_person' => $request->price_per_person,
             'service_id' => $request->service_id,
         ]);
-        
+
         return response()->json([
             'status' => true,
             'message' => 'activitie has been update successfully',
             'updateactivitie' => $updateactivitie
-        ] ,200);
+        ], 200);
     }
 
     /**

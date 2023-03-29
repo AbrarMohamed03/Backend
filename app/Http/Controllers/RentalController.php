@@ -11,17 +11,42 @@ class RentalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rentals = Rental::paginate(10);
-        // $rentals = Rental::all();
-        // $rentals = Rental::paginate(request()->all());    
+        // return $request;
+        if ($request->has('housetype') and $request->has('city')) {
 
+            $rentals = Rental::where('houseType', $request->housetype)
+                ->where('city', $request->city)->get();
 
-        return response()->json([
-            'status' => true,
-            'rentals' => $rentals,
-        ] ,200);
+            return response()->json([
+                'status' => true,
+                'rentals type {' . $request->housetype . '} rentals at {' . $request->city.'}'  => $rentals,
+            ], 200);
+        } elseif ($request->has('housetype')) {
+
+            $rentals = Rental::where('houseType', $request->housetype)->get();
+
+            return response()->json([
+                'status' => true,
+                'rentals type ' . $request->housetype => $rentals,
+            ], 200);
+        } elseif ($request->has('city')) {
+
+            $rentals = Rental::where('city', $request->city)->get();
+
+            return response()->json([
+                'status' => true,
+                'rentals at ' . $request->city . ' ' => $rentals,
+            ], 200);
+        } else {
+            $rentals = Rental::paginate(10);
+
+            return response()->json([
+                'status' => true,
+                'rentals' => $rentals,
+            ], 200);
+        }
     }
 
     /**
@@ -52,7 +77,7 @@ class RentalController extends Controller
             'status' => true,
             'message' => 'rental has been created successfully',
             'rental' => $rental
-        ] ,200);
+        ], 200);
     }
 
     /**
@@ -61,7 +86,7 @@ class RentalController extends Controller
     public function show(Request $request)
     {
         $rental = Rental::findOrfail($request->id);
-        
+
         return response()->json([
             'status' => true,
             'rental' => $rental
@@ -82,7 +107,7 @@ class RentalController extends Controller
     public function update(Request $request)
     {
         $updatedrental = Rental::findOrfail($request->id);
-        
+
         $updatedrental->update([
             'name' => $request->name,
             'type' => $request->type,
@@ -94,12 +119,12 @@ class RentalController extends Controller
             'price_per_night' => $request->price_per_night,
             'service_id' => $request->service_id,
         ]);
-        
+
         return response()->json([
             'status' => true,
             'message' => 'Rental has been updates successfully',
             'updatedrental' => $updatedrental
-        ] ,200);
+        ], 200);
     }
 
     /**
@@ -114,5 +139,58 @@ class RentalController extends Controller
             'status' => true,
             'message' => 'Rental deleted successfully'
         ]);
+    }
+
+    /**
+     * filter by city
+     */
+    public function city(Request $request)
+    {
+        $city = Rental::where('city', $request->city)->get();
+
+        return response()->json([
+            'status' => true,
+            'rentals at ' . $request->city . ' ' => $city,
+        ], 200);
+    }
+
+    /**
+     * filter by city
+     */
+    public function housetype(Request $request)
+    {
+        if ($request->has('housetype') and $request->has('city')) {
+
+            $rentals = Rental::where('houseType', $request->housetype)
+                ->where('city', $request->city)->get();
+
+            return response()->json([
+                'status' => true,
+                'rentals type ' . $request->housetype . ' rentals at ' . $request->city  => $rentals,
+            ], 200);
+        } elseif ($request->has('housetype')) {
+
+            $rentals = Rental::where('houseType', $request->housetype)->get();
+
+            return response()->json([
+                'status' => true,
+                'rentals type ' . $request->housetype => $rentals,
+            ], 200);
+        } elseif ($request->has('city')) {
+
+            $rentals = Rental::where('city', $request->city)->get();
+
+            return response()->json([
+                'status' => true,
+                'rentals at ' . $request->city . ' ' => $rentals,
+            ], 200);
+        } else {
+            $rentals = Rental::paginate(10);
+
+            return response()->json([
+                'status' => true,
+                'rentals' => $rentals,
+            ], 200);
+        }
     }
 }

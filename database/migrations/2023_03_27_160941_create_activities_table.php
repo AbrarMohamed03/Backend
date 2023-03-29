@@ -19,12 +19,11 @@ return new class extends Migration
             $table->integer('duration');
             $table->string('duration_type');
             $table->float('price_per_person');
+            $table->string('city');
+            $table->string('type');
 
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
-
-            $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('type_activities');
             
             $table->timestamps();
         });

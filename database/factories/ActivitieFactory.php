@@ -26,7 +26,8 @@ class ActivitieFactory extends Factory
             'duration_type' => fake()->randomElement(['hour','day','week']),
             'price_per_person' => fake()->numberBetween(200,500),
             'service_id' => Service::all()->random()->id,
-            'type_id' => Type_activitie::all()->random()->id,
+            'type' => fake()->randomElement(['Events','Restorants','Animal Parks']),
+            'city' => fake()->randomElement(['agadir','rabat','tanger','casablanca','marakech','essouira','mohamedia'])
         ];
     }
 }

@@ -17,5 +17,7 @@ class Activitie extends Model
         'duration_type',
         'price_per_person', 
         'service_id', 
+        'type_id',
+        'city',
     ];
 }

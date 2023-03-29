@@ -10,6 +10,7 @@ use App\Http\Controllers\RentalController;
 use App\Http\Controllers\Rental_photoController;
 use App\Http\Controllers\ActivitieController;
 use App\Http\Controllers\Activitie_photoController;
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TouristController;
@@ -166,7 +167,10 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\TouristMiddleware'])->g
 Route::get('/service', [ServiceController::class, 'index']);
 Route::get('/service/{id}', [ServiceController::class, 'show']);
 
-Route::get('/rental', [RentalController::class, 'index']);
+Route::post('/rental', [RentalController::class, 'index']);
 Route::get('/rental/{id}', [RentalController::class, 'show']);
+
+Route::post('/activitie', [ActivitieController::class, 'index']);
+Route::get('/activitie/{id}', [ActivitieController::class, 'show']);
 
 
