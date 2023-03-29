@@ -23,7 +23,7 @@ class ActivitieFactory extends Factory
             'desc' => fake()->sentence(),
             'location' => fake()->sentence(),
             'duration' => fake()->numberBetween(2,5),
-            'duration_type' => fake()->randomElement(['hour','day','week','month','season']),
+            'duration_type' => fake()->randomElement(['hour','day','week']),
             'price_per_person' => fake()->numberBetween(200,500),
             'service_id' => Service::all()->random()->id,
             'type_id' => Type_activitie::all()->random()->id,
