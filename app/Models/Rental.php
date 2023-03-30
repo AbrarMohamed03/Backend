@@ -19,7 +19,7 @@ class Rental extends Model
         'max_persons',
         'price_per_night',
         'service_id',
-        'city',
-        'houseType'
+        'city_id',
+        'Type_id'
     ];
 }

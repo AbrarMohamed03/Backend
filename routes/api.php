@@ -3,14 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\Auth\AdminController;
 use App\Http\Controllers\ProController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\Rental_photoController;
 use App\Http\Controllers\ActivitieController;
 use App\Http\Controllers\Activitie_photoController;
-use App\Http\Controllers\FilterController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TouristController;
@@ -163,14 +162,11 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\TouristMiddleware'])->g
     Route::delete('/review/{id}', [ReviewController::class, 'destroy']);
 });
 
-
 Route::get('/service', [ServiceController::class, 'index']);
 Route::get('/service/{id}', [ServiceController::class, 'show']);
 
-Route::post('/rental', [RentalController::class, 'index']);
+Route::get('/rental', [RentalController::class, 'index']);
 Route::get('/rental/{id}', [RentalController::class, 'show']);
 
-Route::post('/activitie', [ActivitieController::class, 'index']);
+Route::get('/activitie', [ActivitieController::class, 'index']);
 Route::get('/activitie/{id}', [ActivitieController::class, 'show']);
-
-

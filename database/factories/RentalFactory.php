@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
 use App\Models\Service;
+use App\Models\Type_rental;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,8 +29,8 @@ class RentalFactory extends Factory
             'max_persons' => fake()->numberBetween(2,5),
             'price_per_night' => fake()->numberBetween(300,500),
             'service_id' => Service::all()->random()->id,
-            'houseType' => fake()->randomElement(['appertment','house','villa','riad','motel','hotel','room']),
-            'city' => fake()->randomElement(['agadir','rabat','tanger','casablanca','marakech','essouira','mohamedia'])
+            'type_id' => Type_rental::all()->random()->id,
+            'city_id' => City::all()->random()->id,
         ];
     }
 }

@@ -11,19 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('rentals', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('desc');
-            $table->string('location');
-            $table->integer('duration');
-            $table->string('duration_type');
-            $table->float('price_per_person');
-            $table->string('city');
             $table->string('type');
-
+            $table->string('desc');
+            $table->string('adress');
+            $table->integer('bedrooms');
+            $table->integer('bathrooms');
+            $table->integer('max_persons');
+            $table->float('price_per_night');
+            
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
+
+            $table->unsignedBigInteger('type_id');
+            $table->foreign('type_id')->references('id')->on('type_rentals');
+
+            $table->unsignedBigInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('cities');
             
             $table->timestamps();
         });
@@ -34,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activities');
+        Schema::dropIfExists('rentals');
     }
 };
