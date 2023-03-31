@@ -10,6 +10,6 @@ class City extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'photo','shortName'
+        'name', 'photo'
     ];
 }

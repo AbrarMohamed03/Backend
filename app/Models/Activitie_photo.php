@@ -10,7 +10,7 @@ class Activitie_photo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'path',
+        'photo',
         'activities_id', 
     ];
 }

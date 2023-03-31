@@ -18,7 +18,6 @@ class CityFactory extends Factory
     {
         return [
             'name' => fake()->randomElement(['agadir','rabat','tanger','casablanca','marakech','essouira','mohamedia']),
-            'shortName' => fake()->randomLetter(),
             'photo' => fake()->name(),
         ];
     }

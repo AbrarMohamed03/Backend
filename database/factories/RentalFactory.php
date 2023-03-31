@@ -21,7 +21,6 @@ class RentalFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'type' => fake()->sentence(),
             'desc' => fake()->sentence(),
             'adress' => fake()->address(),
             'bedrooms' => fake()->numberBetween(2,5),

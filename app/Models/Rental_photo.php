@@ -10,7 +10,7 @@ class Rental_photo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'path',
+        'photo',
         'rental_id', 
     ];
 }

@@ -18,6 +18,6 @@ class Activitie extends Model
         'price_per_person', 
         'service_id', 
         'city_id',
-        'Type_id'
+        'type_id'
     ];
 }

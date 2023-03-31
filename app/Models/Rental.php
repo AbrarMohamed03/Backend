@@ -11,7 +11,6 @@ class Rental extends Model
 
     protected $fillable = [
         'name',
-        'type',
         'desc',
         'adress',
         'bedrooms',
@@ -20,6 +19,6 @@ class Rental extends Model
         'price_per_night',
         'service_id',
         'city_id',
-        'Type_id'
+        'type_id'
     ];
 }
