@@ -23,6 +23,8 @@ class ProFactory extends Factory
             'phoneNumber' => fake()->phoneNumber(),
             'password' => fake()->password(),
             'CIN' => fake()->sentence(),
+            'CIN_photo' => fake()->sentence(),
+            'verified' => fake()->boolean(),
             'photo' => fake()->sentence(),
         ];
     }

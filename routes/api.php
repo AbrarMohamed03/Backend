@@ -155,9 +155,11 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\ProMiddleware'])->group
     Route::post('/pro/updateInfo/{id}', [ProAuthController::class, 'updateProfile']);
     Route::post('/pro/updatePassword/{id}', [ProAuthController::class, 'updatePassword']);
 
+    Route::get('/pro/activitie/{id}', [ProActivitieController::class, 'index']);
+    Route::get('/pro/activitie/show/{id}', [ProActivitieController::class, 'show']);
     Route::post('/pro/activitie/add', [ProActivitieController::class, 'store']);
     Route::post('/pro/activitie/update/{id}', [ProActivitieController::class, 'update']);
-    Route::delete('/pro/activitie/{id}', [ProActivitieController::class, 'destroy']);
+    Route::delete('/pro/activitie/delete/{id}', [ProActivitieController::class, 'destroy']);
 
     Route::post('/pro/activitie_photo/add', [ProActivitie_photoController::class, 'store']);
     Route::post('/pro/activitie_photo/update/{id}', [ProActivitie_photoController::class, 'update']);

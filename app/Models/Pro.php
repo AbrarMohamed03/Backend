@@ -18,6 +18,8 @@ class Pro extends Authenticatable
         'phoneNumber',
         'password',
         'CIN',
+        'CIN_photo',
+        'verified',
         'photo'
 
     ];

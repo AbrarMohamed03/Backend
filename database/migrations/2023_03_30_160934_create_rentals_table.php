@@ -20,16 +20,16 @@ return new class extends Migration
             $table->integer('bathrooms');
             $table->integer('max_persons');
             $table->float('price_per_night');
-            
+
             $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
 
             $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('type_rentals');
+            $table->foreign('type_id')->references('id')->on('type_rentals')->onDelete('cascade');
 
             $table->unsignedBigInteger('city_id');
-            $table->foreign('city_id')->references('id')->on('cities');
-            
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

@@ -13,7 +13,12 @@ class ProOrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::paginate(10);
+
+        return response()->json([
+            'status' => true,
+            'Orders' => $orders
+        ], 200);
     }
 
     /**
@@ -29,15 +34,29 @@ class ProOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $order = Order::create([
+            'tourist_id' => $request->tourist_id,
+            'service_id' => $request->service_id,
+            'status_id' => $request->status_id
+        ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'order has been created successfully',
+            'Orders' => $order
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Request $request)
     {
-        //
+        $order = Order::findOrfail($request->id);
+
+        return response()->json([
+            'status' => true,
+            'order' => $order
+        ]);
     }
 
     /**
@@ -51,16 +70,34 @@ class ProOrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request)
     {
-        //
+        // return $request;
+        $updateorder = Order::findOrfail($request->id);
+
+        $updateorder->update([
+            'status_id' => $request->status_id
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'order has been update successfully',
+            'updateorder' => $updateorder
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(Request $request)
     {
-        //
+        $deletedorder = Order::findOrfail($request->id);
+        $deletedorder->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'order deleted successfully'
+        ]);
     }
 }
+

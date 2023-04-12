@@ -21,14 +21,14 @@ return new class extends Migration
             $table->float('price_per_person');
 
             $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
 
             $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('type_activities');
+            $table->foreign('type_id')->references('id')->on('type_activities')->onDelete('cascade');
 
             $table->unsignedBigInteger('city_id');
-            $table->foreign('city_id')->references('id')->on('cities');
-            
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

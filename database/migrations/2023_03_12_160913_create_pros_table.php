@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('phoneNumber');
             $table->string('password');
             $table->string('CIN');
+            $table->string('CIN_photo');
             $table->string('photo');
+            $table->boolean('verified');
             $table->rememberToken();
             $table->timestamps();
         });

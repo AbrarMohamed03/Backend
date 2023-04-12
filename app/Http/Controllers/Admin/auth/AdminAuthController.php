@@ -141,46 +141,6 @@ class AdminAuthController extends Controller
 
     public function resetPassword(Request $request)
     {
-        // $validated = $request->validate([
-        //     'email' => 'required|email|exists:admins,email',
-        // ]);
-
-        // $admin = Admin::where('email', $request->email)->first();
-
-        // // Generate a new password
-        // $newPassword = Str::random(10);
-
-        // // Update admin's password
-        // $admin->update([
-        //     'password' => Hash::make($newPassword),
-        // ]);
-
-        // // Send the new password to the admin's email
-        // Mail::to($admin->email)->send(new PasswordResetMail($newPassword, $admin->email));
-
-        // return response()->json([
-        //     'message' => 'A new password has been sent to your email address.',
-        // ]);
-
-
-
-        // $request->validate(['email' => 'required|email']);
-
-        // if (!$request->has('email')) {
-        //     return response()->json(['message' => 'Please provide your email address.'], 422);
-        // }
-
-        // $status = Password::sendResetLink(
-        //     $request->only('email')
-        // );
         
-
-        // if ($status === Password::RESET_LINK_SENT) {
-        //     return response()->json(['message' => __($status)], 200);
-        // } else {
-        //     throw ValidationException::withMessages([
-        //         'email' => __($status)
-        //     ]);
-        // }
     }
 }
