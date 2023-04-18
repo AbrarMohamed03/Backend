@@ -25,6 +25,9 @@ use App\Http\Controllers\Pro\ProRental_photoController;
 use App\Http\Controllers\Pro\ProRentalController;
 use App\Http\Controllers\Pro\ProOrderController;
 
+use App\Http\Controllers\Tourist\Auth\TouristAuthController;
+use App\Http\Controllers\Tourist\TouristOrderController;
+use App\Http\Controllers\Tourist\TouristReviewController;
 
 
 /*
@@ -38,15 +41,14 @@ use App\Http\Controllers\Pro\ProOrderController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
-});
+// Route::group(['middleware' => ['auth:sanctum']], function () {
+// });
 
 
-//========================== Public Routers ==========================
 //---Auth admin---
 Route::post('/admin/register', [AdminAuthController::class, 'register']);
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
@@ -58,6 +60,14 @@ Route::post('/pro/register', [ProAuthController::class, 'register']);
 Route::post('/pro/login', [ProAuthController::class, 'login']);
 Route::post('/pro/passReset', [ProAuthController::class, 'resetPassword']);
 Route::post('/mailtest', [ProAuthController::class, 'resetPassword']);
+
+//---Auth Pro---
+Route::post('/tourist/register', [TouristAuthController::class, 'register']);
+Route::post('/tourist/login', [TouristAuthController::class, 'login']);
+Route::post('/tourist/passReset', [TouristAuthController::class, 'resetPassword']);
+Route::post('/mailtest', [TouristAuthController::class, 'resetPassword']);
+
+//========================== Public Routers ==========================
 
 Route::get('/activitie_photo', [Activitie_photoController::class, 'index']);
 Route::get('/activitie_photo/{id}', [Activitie_photoController::class, 'show']);
@@ -147,7 +157,7 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\AdminMiddleware'])->gro
     Route::delete('/admin/type_activitie/delete/{id}', [Type_activitieController::class, 'destroy']);
 });
 
-//========================== Admin Routers ==========================
+//========================== Pro Routers ==========================
 
 Route::middleware(['auth:sanctum', '\App\Http\Middleware\ProMiddleware'])->group(function () {
 
@@ -178,4 +188,24 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\ProMiddleware'])->group
     Route::post('/pro/rental_photo/update/{id}', [ProRental_photoController::class, 'update']);
     Route::delete('/pro/rental_photo/delete/{id}', [ProRental_photoController::class, 'destroy']);
     // Route::get('/Drental_photo', [ProActivitie_photoController::class, 'deleteUnusedPhotos']);
+});
+
+//========================== Tourist Routers ==========================
+
+Route::middleware(['auth:sanctum', '\App\Http\Middleware\TouristMiddleware'])->group(function () {
+    Route::post('/tourist/logout', [TouristAuthController::class, 'logout']);
+    Route::post('/tourist/updateInfo/{id}', [TouristAuthController::class, 'updateProfile']);
+    Route::post('/tourist/updatePassword/{id}', [TouristAuthController::class, 'updatePassword']);
+
+    Route::get('/tourist/order/tourist_id={id}', [TouristOrderController::class, 'index']);
+    Route::post('/tourist/order/add', [TouristOrderController::class, 'store']);
+    Route::get('/tourist/order/{id}', [TouristOrderController::class, 'show']);
+    Route::post('/tourist/order/update/{id}', [TouristOrderController::class, 'update']);
+    Route::delete('/tourist/order/delete/{id}', [TouristOrderController::class, 'destroy']);
+
+    Route::get('/tourist/review/tourist_id={id}', [TouristReviewController::class, 'index']);
+    Route::post('/tourist/review/add', [TouristReviewController::class, 'store']);
+    Route::post('/tourist/review/update/{id}', [TouristReviewController::class, 'update']);
+    Route::delete('/tourist/review/delete/{id}', [TouristReviewController::class, 'destroy']);
+
 });
