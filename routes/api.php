@@ -155,8 +155,8 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\ProMiddleware'])->group
     Route::post('/pro/updateInfo/{id}', [ProAuthController::class, 'updateProfile']);
     Route::post('/pro/updatePassword/{id}', [ProAuthController::class, 'updatePassword']);
 
-    Route::get('/pro/activitie/{id}', [ProActivitieController::class, 'index']);
-    Route::get('/pro/activitie/show/{id}', [ProActivitieController::class, 'show']);
+    Route::get('/pro/activitie/pro_id={id}', [ProActivitieController::class, 'index']);
+    Route::get('/pro/activitie/{id}', [ProActivitieController::class, 'show']);
     Route::post('/pro/activitie/add', [ProActivitieController::class, 'store']);
     Route::post('/pro/activitie/update/{id}', [ProActivitieController::class, 'update']);
     Route::delete('/pro/activitie/delete/{id}', [ProActivitieController::class, 'destroy']);
@@ -166,9 +166,10 @@ Route::middleware(['auth:sanctum', '\App\Http\Middleware\ProMiddleware'])->group
     Route::delete('/pro/activitie_photo/{id}', [ProActivitie_photoController::class, 'destroy']);
     // Route::get('/Dactivitie_photo', [ProActivitie_photoController::class, 'deleteUnusedPhotos']);
 
-    Route::get('/pro/order', [ProOrderController::class, 'index']);
+    Route::get('/pro/order/pro_id={id}', [ProOrderController::class, 'index']);
     Route::get('/pro/order/{id}', [ProOrderController::class, 'show']);
 
+    Route::get('/pro/rental/pro_id={id}', [ProRentalController::class, 'index']);
     Route::post('/pro/rental/add', [ProRentalController::class, 'store']);
     Route::post('/pro/rental/update/{id}', [ProRentalController::class, 'update']);
     Route::delete('/pro/rental/delete/{id}', [ProRentalController::class, 'destroy']);
